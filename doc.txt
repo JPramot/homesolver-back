@@ -1,0 +1,33 @@
+register
+METHOD  POST        /auth/register
+REQUEST BODY
+{
+    username        string      username for show in website
+    email           string      email for login
+    password        string      password at least 8 character alphabet or number
+    confirmPassword string      confirmPassword must match password
+}
+RESPONSE
+201 {
+    token: string user token
+    user: object user object without password  
+    }
+400 {
+    message: user  error message
+    }
+500 {
+    message: server error message
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
