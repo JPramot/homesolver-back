@@ -39,4 +39,25 @@ const registerSchema = Joi.object({
   role: Joi.forbidden(),
 });
 
+const loginSchema = Joi.object({
+  username: Joi.string()
+    .required()
+    .trim()
+    .pattern(/^[a-zA-Z0-9]{6,}$/)
+    .message({
+      "string.empty": "username is required",
+      "any.required": "username is required",
+    }),
+  password: Joi.string()
+    .required()
+    .trim()
+    .pattern(/^[a-zA-Z0-9]{8,}$/)
+    .message({
+      "string.empty": "password is required",
+      "any.required": "password is required",
+    }),
+});
+
 exports.validateRegister = validate(registerSchema);
+
+exports.validateLogin = validate(loginSchema);

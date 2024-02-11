@@ -19,7 +19,24 @@ RESPONSE
     message: server error message
     }
 
-
+login
+METHOD  POST        /auth/login
+REQUEST BODY
+{
+    username        string      username for login
+    password        string      password for login
+}
+RESPONSE
+200 {
+    token: string user token
+    user: object user object without password  
+    }
+400 {
+    message: user  error message
+    }
+500 {
+    message: server error message
+    }
 
 
 
