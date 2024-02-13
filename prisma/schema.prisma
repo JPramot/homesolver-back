@@ -55,7 +55,6 @@ model Post {
   id              Int              @id @default(autoincrement())
   title           String
   content         String
-  contentImage    String           @map("content_image")
   createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamp(0)
   isDelete        Boolean          @default(false) @map("is_delete")
   canComment      Boolean          @default(true) @map("can_comment")

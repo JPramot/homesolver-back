@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     //   Math.round(Math.random() * 1000000) +
     //   "." +
     //   file.mimetype.split("/")[1];
-    console.log(filename);
+    // console.log(filename);
     cb(null, filename);
   },
 });

@@ -21,16 +21,16 @@ app.use("/auth", authRoute);
 
 app.use("/posts", authenticate, postRoute);
 
-app.post(
-  "/upload",
-  require("./middlewares/upload").array("contentImage"),
-  (req, res, next) => {
-    console.log(file);
-    console.log("(*******************)");
-    console.log(files);
-    res.status(200).json({ message: "suc" });
-  }
-);
+// app.post(
+//   "/upload",
+//   require("./middlewares/upload").array("contentImage"),
+//   (req, res, next) => {
+//     console.log(file);
+//     console.log("(*******************)");
+//     console.log(files);
+//     res.status(200).json({ message: "suc" });
+//   }
+// );
 
 app.use(notFound);
 
