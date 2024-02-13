@@ -38,6 +38,38 @@ RESPONSE
     message: server error message
     }
 
+get authenticate user 
+METHOD get          /auth/me
+HEADER AUTHENTICATION   BEARER [JWT]
+RESPONSE
+200 {
+    user: object user object without password  
+    }
+401 {
+    message: user unauthenticate message
+    }
+500 {
+    message: server error message
+    }
+
+User create post 
+METHOD POST         /posts
+HEADER AUTHENTICATION   BEARER [JWT]
+RESPONSE
+201 {
+    post: post object
+}
+400 {
+    message: invalided input
+}
+401{
+    message: user unauthenticate message
+}
+500{
+    message: server error message
+}
+
+
 
 
 

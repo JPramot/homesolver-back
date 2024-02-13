@@ -7,3 +7,5 @@ exports.findUserByEmail = (email) =>
   prisma.user.findFirst({ where: { email } });
 
 exports.createUser = (data) => prisma.user.create({ data });
+
+exports.findUserById = (id) => prisma.user.findFirst({ where: { id } });

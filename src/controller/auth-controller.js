@@ -1,5 +1,5 @@
 const { hash, compare } = require("../service/hash-service");
-const { sign, verify } = require("../service/jwt-service");
+const { sign } = require("../service/jwt-service");
 const {
   findUserByUsername,
   findUserByEmail,
@@ -36,4 +36,8 @@ exports.login = catchError(async (req, res, next) => {
   const token = sign(payload);
   delete existUserByUsername.password;
   res.status(200).json({ user: existUserByUsername, token });
+});
+
+exports.getMe = catchError(async (req, res, next) => {
+  res.status(200).json({ user: req.user });
 });

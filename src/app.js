@@ -7,6 +7,8 @@ const limit = require("./middlewares/rate-limit");
 const notFound = require("./middlewares/notfound");
 const error = require("./middlewares/error");
 const authRoute = require("./routes/auth-route");
+const postRoute = require("./routes/post-route");
+const authenticate = require("./middlewares/authenticate");
 
 const app = express();
 
@@ -16,6 +18,19 @@ app.use(limit);
 app.use(morgan("dev"));
 
 app.use("/auth", authRoute);
+
+app.use("/posts", authenticate, postRoute);
+
+app.post(
+  "/upload",
+  require("./middlewares/upload").array("contentImage"),
+  (req, res, next) => {
+    console.log(file);
+    console.log("(*******************)");
+    console.log(files);
+    res.status(200).json({ message: "suc" });
+  }
+);
 
 app.use(notFound);
 
