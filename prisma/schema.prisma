@@ -45,6 +45,8 @@ model UserProfile {
   birthDate    DateTime? @map("birth_date") @db.Date
   gender       Gender?
   profileImage String?   @map("profile_image")
+  alias        String?
+  introduction String?
   userId       Int       @unique @map("user_id")
   user         User      @relation(fields: [userId], references: [id])
 

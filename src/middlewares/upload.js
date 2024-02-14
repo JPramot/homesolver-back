@@ -3,9 +3,11 @@ const { v4: uuidv4 } = require("uuid");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log("test log multer");
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
+    console.log("multer");
     const filename = uuidv4() + "." + file.mimetype.split("/")[1];
     // const filename =
     //   "" +

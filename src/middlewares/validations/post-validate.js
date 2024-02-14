@@ -12,4 +12,18 @@ const schemaPost = Joi.object({
   }),
 });
 
-exports.validatePost = validate(schemaPost);
+exports.validatePost = (req, res, next) => {
+  // console.log(req.body);
+  // console.log("5555");
+  console.log(req.files, "_______________");
+  // if (req.body.image) {
+  //   req.files = req.body.image;
+  //   delete req.body.image;
+  // }
+  const { error } = schemaPost.validate(req.body);
+  if (error) throw error;
+  console.log("err");
+  next();
+};
+
+// exports.validatePost = validate(schemaPost);

@@ -10,10 +10,9 @@ const createError = require("../utilitys/createError");
 
 exports.createPost = async (req, res, next) => {
   try {
+    delete req.body.image;
     const postData = { ...req.body, userId: req.user.id };
-    console.log(postData);
     const newPost = await createPostByUser(postData);
-    console.log(newPost);
     const postImage = [];
 
     if (req.files.length > 0) {
@@ -25,6 +24,7 @@ exports.createPost = async (req, res, next) => {
       for (image of req.files) {
         data.image = await upload(image.path);
         const linkImage = await createImageForPost(data);
+        // console.log(linkImage, "kkkkkkkk");
         postImage.push(linkImage);
       }
     }
