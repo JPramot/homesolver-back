@@ -5,6 +5,7 @@ const fs = require("fs/promises");
 const {
   createPostByUser,
   createImageForPost,
+  findAllPost,
 } = require("../service/post-service");
 const createError = require("../utilitys/createError");
 
@@ -40,3 +41,8 @@ exports.createPost = async (req, res, next) => {
     }
   }
 };
+
+exports.getAllpost = catchError(async (req, res, next) => {
+  const allPost = await findAllPost();
+  res.status(200).json({ posts: allPost });
+});

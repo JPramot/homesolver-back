@@ -20,7 +20,7 @@ app.use(morgan("dev"));
 
 app.use("/auth", authRoute);
 
-app.use("/posts", authenticate, postRoute);
+app.use("/posts", postRoute);
 
 app.use("/users", authenticate, userRoute);
 

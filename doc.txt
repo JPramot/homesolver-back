@@ -77,6 +77,22 @@ RESPONSE
 
 ------------------------------------------------------------------------
 
+User get all post 
+METHOD GET          /posts
+RESPONSE
+200 {
+    post: post object
+}
+400 {
+    message: post not found
+}
+500{
+    message: server error message
+}
+
+
+------------------------------------------------------------------------
+
 User update profile
 METHOD PATCH        /user
 HEADER AUTHENTICATION   BEARER [JWT]
