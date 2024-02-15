@@ -10,6 +10,7 @@ const createError = require("../utilitys/createError");
 
 exports.createPost = async (req, res, next) => {
   try {
+    console.log(req.body, "test req body");
     delete req.body.image;
     const postData = { ...req.body, userId: req.user.id };
     const newPost = await createPostByUser(postData);
