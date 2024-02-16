@@ -10,6 +10,7 @@ const {
   deletePostByPostId,
   findImagePostByPostId,
   deleteImagePostByPostId,
+  getPostAndCommentByPostId,
 } = require("../service/post-service");
 const createError = require("../utilitys/createError");
 
@@ -60,4 +61,10 @@ exports.deletePost = catchError(async (req, res, next) => {
   if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
   await deletePostByPostId(req.postId);
   res.status(204).json({});
+});
+
+exports.getPostWithComment = catchError(async (req, res, next) => {
+  const existPost = await getPostAndCommentByPostId(req.postId);
+  if (!existPost) catchError(400, "post not found");
+  res.status(200).json({ post: existPost });
 });

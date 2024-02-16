@@ -27,3 +27,18 @@ exports.deletePostByPostId = (id) => prisma.post.delete({ where: { id } });
 
 exports.deleteImagePostByPostId = (id) =>
   prisma.postImage.deleteMany({ where: { postId: id } });
+
+exports.getPostAndCommentByPostId = (id) =>
+  prisma.post.findFirst({
+    where: { id },
+    include: {
+      comments: true,
+      postImages: true,
+      user: {
+        select: {
+          userProfile: { select: { alias: true, profileImage: true } },
+          username: true,
+        },
+      },
+    },
+  });

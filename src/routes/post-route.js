@@ -4,6 +4,7 @@ const {
   createPost,
   getAllpost,
   deletePost,
+  getPostWithComment,
 } = require("../controller/post-controller");
 const upload = require("../middlewares/upload");
 const authenticate = require("../middlewares/authenticate");
@@ -18,5 +19,7 @@ router.post("/", authenticate, upload.array("image"), validatePost, createPost);
 router.get("/", getAllpost);
 
 router.delete("/:postId", authenticate, validatePostId, deletePost);
+
+router.get("/:postId/comment", validatePostId, getPostWithComment);
 
 module.exports = router;

@@ -61,6 +61,12 @@ RESPONSE
 User create post 
 METHOD POST         /posts
 HEADER AUTHENTICATION   BEARER [JWT]
+REQUEST BODY
+{
+    title           string      intro something
+    content         string      main
+    image           file?       picture for post 
+}
 RESPONSE
 201 {
     post: post object
@@ -93,9 +99,26 @@ RESPONSE
 
 ------------------------------------------------------------------------
 
+get post with comment
+METHOD GET          /posts/:postId/comment
+REQUEST params: postId
+RESPONSE
+200 {
+    post: post object with comment
+}
+400 {
+    message: post not found
+}
+500 {
+    message: server error message
+}
+
+------------------------------------------------------------------------
+
 User delete post
 METHOD DELETE       /posts/:postId
 HEADER AUTHENTICATION   BEARER [JWT]
+REQUEST params: postId
 204 {
     
 }
