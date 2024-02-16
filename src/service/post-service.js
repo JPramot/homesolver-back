@@ -17,3 +17,13 @@ exports.findAllPost = () =>
     },
     orderBy: { createdAt: "desc" },
   });
+
+exports.findPostByPostId = (id) => prisma.post.findFirst({ where: { id } });
+
+exports.findImagePostByPostId = (id) =>
+  prisma.postImage.findMany({ where: { postId: id } });
+
+exports.deletePostByPostId = (id) => prisma.post.delete({ where: { id } });
+
+exports.deleteImagePostByPostId = (id) =>
+  prisma.postImage.deleteMany({ where: { postId: id } });

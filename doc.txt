@@ -93,6 +93,26 @@ RESPONSE
 
 ------------------------------------------------------------------------
 
+User delete post
+METHOD DELETE       /posts/:postId
+HEADER AUTHENTICATION   BEARER [JWT]
+204 {
+    
+}
+400 {
+    message: not found post
+}
+401{
+    message: user unauthenticate message
+}
+500{
+    message: server error message
+}
+
+
+------------------------------------------------------------------------
+
+
 User update profile
 METHOD PATCH        /user
 HEADER AUTHENTICATION   BEARER [JWT]

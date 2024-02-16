@@ -6,13 +6,19 @@ const {
   createPostByUser,
   createImageForPost,
   findAllPost,
+  findPostByPostId,
+  deletePostByPostId,
+  findImagePostByPostId,
+  deleteImagePostByPostId,
 } = require("../service/post-service");
 const createError = require("../utilitys/createError");
 
 exports.createPost = async (req, res, next) => {
   try {
+    console.log(req.body);
     console.log(req.body, "test req body");
-    delete req.body.image;
+    console.log(req.files);
+    // delete req.body.image;
     const postData = { ...req.body, userId: req.user.id };
     const newPost = await createPostByUser(postData);
     const postImage = [];
@@ -45,4 +51,13 @@ exports.createPost = async (req, res, next) => {
 exports.getAllpost = catchError(async (req, res, next) => {
   const allPost = await findAllPost();
   res.status(200).json({ posts: allPost });
+});
+
+exports.deletePost = catchError(async (req, res, next) => {
+  const existPost = await findPostByPostId(req.postId);
+  if (!existPost) createError(400, "post not found");
+  const existImagePost = await findImagePostByPostId(req.postId);
+  if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
+  await deletePostByPostId(req.postId);
+  res.status(204).json({});
 });

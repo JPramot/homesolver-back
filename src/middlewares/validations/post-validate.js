@@ -15,14 +15,15 @@ const schemaPost = Joi.object({
 exports.validatePost = (req, res, next) => {
   // console.log(req.body);
   // console.log("5555");
-  console.log(req.files, "_______________");
+  console.log("______________", req.files, "_______________");
+  console.log(req.body);
   // if (req.body.image) {
   //   req.files = req.body.image;
   //   delete req.body.image;
   // }
   const { error } = schemaPost.validate(req.body);
   if (error) throw error;
-  console.log("err");
+  // console.log("err");
   next();
 };
 

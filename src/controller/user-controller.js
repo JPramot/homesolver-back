@@ -18,11 +18,12 @@ exports.updateUserProfile = async (req, res, next) => {
       delete data.birthDate;
       data = { ...data, birthDate: date };
     }
-
+    console.log(req.file);
     if (req.file) {
       console.log("upload");
       const profileImage = await upload(req.file.path);
-      data = { ...data, profileImage };
+      if (!profileImage) createError(500, "server for cloud picture error");
+      else data = { ...data, profileImage };
     }
     console.log("before doing");
 
