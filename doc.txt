@@ -115,6 +115,30 @@ RESPONSE
 
 ------------------------------------------------------------------------
 
+User comment on post
+METHOD POST         /comments/:postId/
+AUTHENTICATION      BEARER [JWT]
+REQUEST BODY
+{
+    content       string      comment something
+}
+REQUEST params: postId
+RESPONSE
+201 {
+    comment: comment object
+}
+400 {
+    message: user invalid input
+}
+401 {
+    message: unauthenticate message
+}
+500 {
+    message: server error message
+}
+
+------------------------------------------------------------------------
+
 User delete post
 METHOD DELETE       /posts/:postId
 HEADER AUTHENTICATION   BEARER [JWT]

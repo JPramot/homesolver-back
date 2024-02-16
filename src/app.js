@@ -9,6 +9,7 @@ const error = require("./middlewares/error");
 const authRoute = require("./routes/auth-route");
 const postRoute = require("./routes/post-route");
 const userRoute = require("./routes/user-route");
+const commentRoute = require("./routes/comment-route");
 const authenticate = require("./middlewares/authenticate");
 
 const app = express();
@@ -23,6 +24,8 @@ app.use("/auth", authRoute);
 app.use("/posts", postRoute);
 
 app.use("/users", authenticate, userRoute);
+
+app.use("/comments", authenticate, commentRoute);
 
 // app.post(
 //   "/upload",
