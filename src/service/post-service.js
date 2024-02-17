@@ -37,8 +37,11 @@ exports.getPostAndCommentByPostId = (id) =>
           id: true,
           createdAt: true,
           content: true,
+          postId: true,
+          post: { select: { userId: true } },
           user: {
             select: {
+              id: true,
               userProfile: { select: { alias: true, profileImage: true } },
             },
           },

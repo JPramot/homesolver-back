@@ -8,5 +8,7 @@ exports.createComment = (data) =>
 exports.findCommentByCommentId = (id) =>
   prisma.comment.findFirst({ where: { id } });
 
-exports.deleteCommentByCommentId = (id, postId) =>
-  prisma.comment.delete({ where: { id, postId } });
+exports.deleteCommentByCommentId = (id, postId, userId) =>
+  prisma.comment.delete({
+    where: { id, postId, OR: [{ userId }, { post: { userId } }] },
+  });

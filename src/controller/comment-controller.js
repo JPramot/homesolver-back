@@ -23,6 +23,7 @@ exports.deleteComment = catchError(async (req, res, next) => {
   if (!existPost) createError(400, "post not found");
   const existComment = await findCommentByCommentId(req.commentId);
   if (!existComment) createError(400, "comment not found");
-  await deleteCommentByCommentId(req.commentId, req.postId);
+  await deleteCommentByCommentId(req.commentId, req.postId, req.user.id);
+  console.log(res);
   res.status(204).json({});
 });
