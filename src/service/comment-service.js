@@ -6,7 +6,10 @@ exports.createComment = (data) =>
   });
 
 exports.findCommentByCommentId = (id) =>
-  prisma.comment.findFirst({ where: { id } });
+  prisma.comment.findFirst({
+    where: { id },
+    include: { user: { select: { id: true } } },
+  });
 
 exports.deleteCommentByCommentId = (id, postId, userId) =>
   prisma.comment.delete({

@@ -157,6 +157,30 @@ REQUEST params: postId
 
 ------------------------------------------------------------------------
 
+User appeal post to admin
+METHOD POST     /posts/:postId/appeal
+HEADER AUTHENTICATION   BEARER [JWT]
+REQUEST params: postId
+REQUEST BODY
+{
+    content:    string      why do you appeal this post
+}
+RESPONSE
+200 {
+    message: post was appealed to admin
+}
+400 {
+    message: post not found
+}
+401 {
+    message: user unauthenticate message
+}
+500 {
+    message: server error message
+}
+
+------------------------------------------------------------------------
+
 User delete comment (owner post or comment)
 METHOD DELETE       /comments/:commentId
 HEADER AUTHENTICATION   BEARER [JWT]

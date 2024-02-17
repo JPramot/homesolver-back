@@ -10,10 +10,10 @@ exports.findAllPost = () =>
       user: {
         select: {
           role: true,
-          comments: true,
           userProfile: { select: { alias: true, profileImage: true } },
         },
       },
+      comments: { select: { content: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -56,3 +56,8 @@ exports.getPostAndCommentByPostId = (id) =>
       },
     },
   });
+
+exports.findAppealPostByUserAndPostId = (userId, postId) =>
+  prisma.appealedPost.findFirst({ where: { userId, postId } });
+
+exports.createAppealPost = (data) => prisma.appealedPost.create({ data });
