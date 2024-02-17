@@ -96,7 +96,6 @@ RESPONSE
     message: server error message
 }
 
-
 ------------------------------------------------------------------------
 
 get post with comment
@@ -156,9 +155,27 @@ REQUEST params: postId
     message: server error message
 }
 
-
 ------------------------------------------------------------------------
 
+User delete comment (owner post or comment)
+METHOD DELETE       /comments/:commentId
+HEADER AUTHENTICATION   BEARER [JWT]
+REQUEST params: commentId
+RESPONSE
+204 {
+
+}
+400 {
+    message: comment not found
+}
+401 {
+    message: user unauthenticate message
+}
+500 {
+    message: server error message
+}
+
+------------------------------------------------------------------------
 
 User update profile
 METHOD PATCH        /user

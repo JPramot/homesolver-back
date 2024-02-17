@@ -1,4 +1,8 @@
-const { createComment } = require("../service/comment-service");
+const {
+  createComment,
+  findCommentByCommentId,
+  deleteCommentByCommentId,
+} = require("../service/comment-service");
 const { findPostByPostId } = require("../service/post-service");
 const catchError = require("../utilitys/catchError");
 const createError = require("../utilitys/createError");
@@ -9,5 +13,16 @@ exports.postComment = catchError(async (req, res, next) => {
   if (!existPost) createError(400, "post not found");
 
   const comment = await createComment(data);
-  res.status(201).json({ comment });
+
+  const existComment = await findCommentByCommentId(comment.id);
+  res.status(201).json({ comment: existComment });
+});
+
+exports.deleteComment = catchError(async (req, res, next) => {
+  const existPost = await findPostByPostId(req.postId);
+  if (!existPost) createError(400, "post not found");
+  const existComment = await findCommentByCommentId(req.commentId);
+  if (!existComment) createError(400, "comment not found");
+  await deleteCommentByCommentId(req.commentId, req.postId);
+  res.status(204).json({});
 });

@@ -65,6 +65,7 @@ exports.deletePost = catchError(async (req, res, next) => {
 
 exports.getPostWithComment = catchError(async (req, res, next) => {
   const existPost = await getPostAndCommentByPostId(req.postId);
-  if (!existPost) catchError(400, "post not found");
+  console.log(existPost);
+  if (!existPost) createError(400, "post not found");
   res.status(200).json({ post: existPost });
 });

@@ -32,7 +32,18 @@ exports.getPostAndCommentByPostId = (id) =>
   prisma.post.findFirst({
     where: { id },
     include: {
-      comments: true,
+      comments: {
+        select: {
+          id: true,
+          createdAt: true,
+          content: true,
+          user: {
+            select: {
+              userProfile: { select: { alias: true, profileImage: true } },
+            },
+          },
+        },
+      },
       postImages: true,
       user: {
         select: {

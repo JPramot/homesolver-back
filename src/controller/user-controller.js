@@ -6,12 +6,16 @@ const {
 } = require("../service/user-service");
 const createError = require("../utilitys/createError");
 const { upload } = require("../service/upload-service");
+const {
+  userProfileData,
+} = require("../middlewares/validations/userprofile-validate");
 
 exports.updateUserProfile = async (req, res, next) => {
   try {
     console.log(req.body);
     console.log(req.file);
-    let data = { ...req.body, userId: req.user.id };
+    let data = userProfileData(req.body);
+    data = { ...data, userId: req.user.id };
     console.log(data);
     if (req.body.birthDate) {
       const date = new Date(req.body.birthDate);

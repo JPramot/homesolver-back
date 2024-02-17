@@ -5,7 +5,6 @@ const postIdSchema = Joi.object({
 });
 
 exports.validatePostId = (req, res, next) => {
-  console.log(req.params);
   const { value, error } = postIdSchema.validate(req.params);
   if (error) throw error;
 
