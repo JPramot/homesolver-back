@@ -6,6 +6,7 @@ const {
   deletePost,
   getPostWithComment,
   appealPost,
+  getAppealPost,
 } = require("../controller/post-controller");
 const upload = require("../middlewares/upload");
 const authenticate = require("../middlewares/authenticate");
@@ -24,5 +25,7 @@ router.delete("/:postId", authenticate, validatePostId, deletePost);
 router.get("/:postId/comment", validatePostId, getPostWithComment);
 
 router.post("/:postId/appeal", authenticate, validatePostId, appealPost);
+
+router.get("/appealed", authenticate, getAppealPost);
 
 module.exports = router;

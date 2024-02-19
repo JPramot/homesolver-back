@@ -83,7 +83,7 @@ RESPONSE
 
 ------------------------------------------------------------------------
 
-User get all post 
+get all post 
 METHOD GET          /posts
 RESPONSE
 200 {
@@ -178,6 +178,26 @@ RESPONSE
 500 {
     message: server error message
 }
+
+------------------------------------------------------------------------
+
+Admin get appealed post
+METHOD GET          /posts/appealed
+HEADER AUTHENTICATION   BEARER [JWT]
+RESPONSE
+200 {
+    appealPost: appealPost object
+}
+400 {
+    message: appealPosts not found
+}
+401 {
+    message: unauthenticate message
+}
+500 {
+    message: server error message
+}
+
 
 ------------------------------------------------------------------------
 

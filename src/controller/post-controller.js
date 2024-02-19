@@ -13,6 +13,7 @@ const {
   getPostAndCommentByPostId,
   findAppealPostByUserAndPostId,
   createAppealPost,
+  findAllAppealPost,
 } = require("../service/post-service");
 const createError = require("../utilitys/createError");
 
@@ -40,7 +41,7 @@ exports.createPost = async (req, res, next) => {
       }
     }
     console.log(postImage);
-    res.status(200).json({ post: { ...newPost, postImage } });
+    res.status(201).json({ post: { ...newPost, postImage } });
   } catch (err) {
     console.log(err);
     createError(400, err);
@@ -83,4 +84,10 @@ exports.appealPost = catchError(async (req, res, next) => {
   const data = { ...req.body, userId: req.user.id, postId: req.postId };
   await createAppealPost(data);
   res.status(200).json({ message: "post was appealed" });
+});
+
+exports.getAppealPost = catchError(async (req, res, next) => {
+  if (req.user.role !== "admin") createError(401, "You're not admin");
+  const appealPost = await findAllAppealPost();
+  res.status(200).json({ appealPost });
 });
