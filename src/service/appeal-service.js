@@ -18,3 +18,9 @@ exports.findAppealPostById = (id) =>
 
 exports.deleteAppealPostById = (id) =>
   prisma.appealedPost.delete({ where: { id } });
+
+exports.findAppealPostByPostId = (postId) =>
+  prisma.appealedPost.findMany({ where: { postId } });
+
+exports.deleteAppealPostByPostId = (postId) =>
+  prisma.appealedPost.deleteMany({ where: { postId } });

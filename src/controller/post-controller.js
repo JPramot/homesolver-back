@@ -16,6 +16,14 @@ const {
   editPostById,
 } = require("../service/post-service");
 const createError = require("../utilitys/createError");
+const {
+  findCommentByPostId,
+  deleteCommentByPostId,
+} = require("../service/comment-service");
+const {
+  findAppealPostByPostId,
+  deleteAppealPostByPostId,
+} = require("../service/appeal-service");
 
 exports.createPost = async (req, res, next) => {
   try {
@@ -63,6 +71,10 @@ exports.deletePost = catchError(async (req, res, next) => {
     createError(400, "not authorized");
   const existImagePost = await findImagePostByPostId(req.postId);
   if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
+  const exixtComment = await findCommentByPostId(req.postId);
+  if (exixtComment.length > 0) await deleteCommentByPostId(req.postId);
+  const existAppeal = await findAppealPostByPostId(req.postId);
+  if (existAppeal.length > 0) await deleteAppealPostByPostId(req.postId);
   await deletePostByPostId(req.postId);
   res.status(204).json({});
 });
