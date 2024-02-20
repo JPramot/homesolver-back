@@ -14,6 +14,7 @@ exports.findAllPost = () =>
         },
       },
       comments: { select: { content: true } },
+      postImages: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -23,7 +24,10 @@ exports.findPostByPostId = (id) => prisma.post.findFirst({ where: { id } });
 exports.findImagePostByPostId = (id) =>
   prisma.postImage.findMany({ where: { postId: id } });
 
-exports.deletePostByPostId = (id) => prisma.post.delete({ where: { id } });
+exports.deletePostByPostId = (id) =>
+  prisma.post.delete({
+    where: { id },
+  });
 
 exports.deleteImagePostByPostId = (id) =>
   prisma.postImage.deleteMany({ where: { postId: id } });
@@ -57,15 +61,11 @@ exports.getPostAndCommentByPostId = (id) =>
     },
   });
 
-exports.findAppealPostByUserAndPostId = (userId, postId) =>
-  prisma.appealedPost.findFirst({ where: { userId, postId } });
+exports.findPostImagebyId = (id) =>
+  prisma.postImage.findFirst({ where: { id } });
 
-exports.createAppealPost = (data) => prisma.appealedPost.create({ data });
+exports.deletePostImagebyId = (id) =>
+  prisma.postImage.delete({ where: { id } });
 
-exports.findAllAppealPost = () =>
-  prisma.appealedPost.findMany({
-    include: {
-      post: { select: { title: true, content: true } },
-      user: { select: { userProfile: true } },
-    },
-  });
+exports.editPostById = (data, id) =>
+  prisma.post.update({ data, where: { id } });

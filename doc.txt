@@ -158,7 +158,7 @@ REQUEST params: postId
 ------------------------------------------------------------------------
 
 User appeal post to admin
-METHOD POST     /posts/:postId/appeal
+METHOD POST     /appeal/:postId
 HEADER AUTHENTICATION   BEARER [JWT]
 REQUEST params: postId
 REQUEST BODY
@@ -182,7 +182,7 @@ RESPONSE
 ------------------------------------------------------------------------
 
 Admin get appealed post
-METHOD GET          /posts/appealed
+METHOD GET          /appeal
 HEADER AUTHENTICATION   BEARER [JWT]
 RESPONSE
 200 {
@@ -190,6 +190,26 @@ RESPONSE
 }
 400 {
     message: appealPosts not found
+}
+401 {
+    message: unauthenticate message
+}
+500 {
+    message: server error message
+}
+
+------------------------------------------------------------------------
+
+Admin delete appealed post
+METHOD DELETE       /appeal/:postId
+HEADER AUTHENTICATION   BEARER [JWT]
+REQUEST params: postId
+RESPONSE
+204 {
+
+}
+400 {
+    message: post not found
 }
 401 {
     message: unauthenticate message

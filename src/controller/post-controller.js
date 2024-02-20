@@ -11,9 +11,9 @@ const {
   findImagePostByPostId,
   deleteImagePostByPostId,
   getPostAndCommentByPostId,
-  findAppealPostByUserAndPostId,
-  createAppealPost,
-  findAllAppealPost,
+  findPostImagebyId,
+  deletePostImagebyId,
+  editPostById,
 } = require("../service/post-service");
 const createError = require("../utilitys/createError");
 
@@ -36,11 +36,10 @@ exports.createPost = async (req, res, next) => {
       for (image of req.files) {
         data.image = await upload(image.path);
         const linkImage = await createImageForPost(data);
-        // console.log(linkImage, "kkkkkkkk");
         postImage.push(linkImage);
       }
     }
-    console.log(postImage);
+    console.log(newPost);
     res.status(201).json({ post: { ...newPost, postImage } });
   } catch (err) {
     console.log(err);
@@ -60,6 +59,8 @@ exports.getAllpost = catchError(async (req, res, next) => {
 exports.deletePost = catchError(async (req, res, next) => {
   const existPost = await findPostByPostId(req.postId);
   if (!existPost) createError(400, "post not found");
+  if (existPost.userId !== req.user.id && req.user.role !== "admin")
+    createError(400, "not authorized");
   const existImagePost = await findImagePostByPostId(req.postId);
   if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
   await deletePostByPostId(req.postId);
@@ -73,21 +74,47 @@ exports.getPostWithComment = catchError(async (req, res, next) => {
   res.status(200).json({ post: existPost });
 });
 
-exports.appealPost = catchError(async (req, res, next) => {
-  const existPost = await findPostByPostId(req.postId);
-  if (!existPost) createError(400, "post not found");
-  const existAppealPost = await findAppealPostByUserAndPostId(
-    req.user.id,
-    req.postId
-  );
-  if (existAppealPost) createError(400, "you was already appealed this post");
-  const data = { ...req.body, userId: req.user.id, postId: req.postId };
-  await createAppealPost(data);
-  res.status(200).json({ message: "post was appealed" });
-});
-
-exports.getAppealPost = catchError(async (req, res, next) => {
-  if (req.user.role !== "admin") createError(401, "You're not admin");
-  const appealPost = await findAllAppealPost();
-  res.status(200).json({ appealPost });
-});
+exports.editPost = async (req, res, next) => {
+  try {
+    console.log("controller");
+    console.log(req.params);
+    console.log(req.body);
+    console.log(req.files);
+    const existPost = await findPostByPostId(req.postId);
+    if (!existPost) createError(400, "post not found");
+    if (existPost.userId !== req.user.id)
+      createError(400, "You can't edit this post");
+    if (req.body.deleteImage) {
+      let imageId = req.body.deleteImage.split(",").map((el) => Number(el));
+      console.log(imageId, "testtttttttttttttttttttt");
+      for (id of imageId) {
+        const existPostImage = await findPostImagebyId(id);
+        if (!existPostImage) createError(400, "Post image not found");
+        await deletePostImagebyId(id);
+      }
+    }
+    delete req.body.deleteImage;
+    const post = await editPostById(req.body, req.postId);
+    const postImage = [];
+    if (req.files.length > 0) {
+      const { error } = imageSchema.validate(req.files);
+      if (error) {
+        throw error;
+      }
+      let data = { postId: post.id };
+      for (images of req.files) {
+        data.image = await upload(images.path);
+        linkImage = await createImageForPost(data);
+        postImage.push(linkImage);
+      }
+    }
+    res.status(200).json({ test: "test" });
+  } catch (err) {
+    console.log(err);
+    createError(400, err);
+  } finally {
+    for (images of req.files) {
+      fs.unlink(images.path);
+    }
+  }
+};
