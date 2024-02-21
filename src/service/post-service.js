@@ -11,6 +11,7 @@ exports.findAllPost = () =>
         select: {
           role: true,
           userProfile: { select: { alias: true, profileImage: true } },
+          id: true,
         },
       },
       comments: { select: { content: true } },

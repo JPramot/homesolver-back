@@ -21,3 +21,9 @@ exports.createUserProfile = (data) => prisma.userProfile.create({ data });
 
 exports.updateUserProfileById = (data, id) =>
   prisma.userProfile.update({ data, where: { id } });
+
+exports.findUserProfileAndAllPost = (id) =>
+  prisma.userProfile.findFirst({
+    where: { userId: id },
+    include: { user: { select: { posts: { include: { comments: true } } } } },
+  });

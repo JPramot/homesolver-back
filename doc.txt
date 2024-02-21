@@ -156,6 +156,24 @@ REQUEST params: postId
 }
 
 ------------------------------------------------------------------------
+Admin delete post
+METHOD DELETE       /posts/:postId
+HEADER AUTHENTICATION   BEARER [JWT]
+REQUEST params: postId
+204 {
+    
+}
+400 {
+    message: not found post
+}
+401{
+    message: user unauthenticate message
+}
+500{
+    message: server error message
+}
+
+------------------------------------------------------------------------
 
 User appeal post to admin
 METHOD POST     /appeal/:postId
@@ -201,7 +219,7 @@ RESPONSE
 ------------------------------------------------------------------------
 
 Admin delete appealed post
-METHOD DELETE       /appeal/:postId
+METHOD DELETE       /appeal/:appealPostId
 HEADER AUTHENTICATION   BEARER [JWT]
 REQUEST params: postId
 RESPONSE
@@ -209,7 +227,7 @@ RESPONSE
 
 }
 400 {
-    message: post not found
+    message: Appeal post not found
 }
 401 {
     message: unauthenticate message
@@ -217,7 +235,6 @@ RESPONSE
 500 {
     message: server error message
 }
-
 
 ------------------------------------------------------------------------
 
@@ -241,8 +258,24 @@ RESPONSE
 
 ------------------------------------------------------------------------
 
+User get other user profile
+METHOD GET          /uesrs/profile/:userId
+REQUEST params: userId
+RESPONSE
+200 {
+    profile : userProrile object
+}
+400 {
+    message: user not found
+}
+500{
+    message: server error message
+}
+
+------------------------------------------------------------------------
+
 User update profile
-METHOD PATCH        /user
+METHOD PATCH        /users
 HEADER AUTHENTICATION   BEARER [JWT]
 RESPONSE
 200 {

@@ -28,10 +28,10 @@ exports.getAppealPost = catchError(async (req, res, next) => {
   res.status(200).json({ appealPost });
 });
 
-exports.deleteAppealPostByAppealPostId = catchError(async (req, res, next) => {
+exports.deleteAppealPost = catchError(async (req, res, next) => {
   if (req.user.role !== "admin") createError(400, "You're not admin");
   const existAppealPost = await findAppealPostById(req.appealPostId);
   if (!existAppealPost) createError(400, "Appeal post not found");
   await deleteAppealPostById(req.appealPostId);
-  res.status(200).json({});
+  res.status(204).json({});
 });

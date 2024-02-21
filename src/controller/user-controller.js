@@ -3,12 +3,15 @@ const {
   findUserProfileById,
   createUserProfile,
   updateUserProfileById,
+  findUserById,
+  findUserProfileAndAllPost,
 } = require("../service/user-service");
 const createError = require("../utilitys/createError");
 const { upload } = require("../service/upload-service");
 const {
   userProfileData,
 } = require("../middlewares/validations/userprofile-validate");
+const catchError = require("../utilitys/catchError");
 
 exports.updateUserProfile = async (req, res, next) => {
   try {
@@ -52,3 +55,12 @@ exports.updateUserProfile = async (req, res, next) => {
   }
   //   res.status(400).json({ message: "user error" });
 };
+
+exports.getUserProfileAndAllPost = catchError(async (req, res, next) => {
+  const existUser = await findUserById(req.userId);
+  if (!existUser) createError(400, "User not found");
+  const existUserProfileAndAllPost = await findUserProfileAndAllPost(
+    req.userId
+  );
+  res.status(200).json({ userProfile: existUserProfileAndAllPost });
+});

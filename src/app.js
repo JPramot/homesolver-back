@@ -11,6 +11,7 @@ const postRoute = require("./routes/post-route");
 const userRoute = require("./routes/user-route");
 const appealRoute = require("./routes/appeal-route");
 const commentRoute = require("./routes/comment-route");
+const banRoute = require("./routes/banned-route");
 const authenticate = require("./middlewares/authenticate");
 
 const app = express();
@@ -24,11 +25,13 @@ app.use("/auth", authRoute);
 
 app.use("/posts", postRoute);
 
-app.use("/users", authenticate, userRoute);
+app.use("/users", userRoute);
 
 app.use("/comments", authenticate, commentRoute);
 
 app.use("/appeal", authenticate, appealRoute);
+
+app.use("/banned", authenticate, banRoute);
 
 // app.post(
 //   "/upload",

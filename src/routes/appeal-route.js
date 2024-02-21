@@ -8,6 +8,7 @@ const {
 const {
   appealPost,
   getAppealPost,
+  deleteAppealPost,
 } = require("../controller/appeal-controller");
 
 const router = Router();
@@ -16,6 +17,6 @@ router.post("/:postId", validatePostId, appealPost);
 
 router.get("/", getAppealPost);
 
-router.delete("/:appealPostId", validateAppealPostId);
+router.delete("/:appealPostId", validateAppealPostId, deleteAppealPost);
 
 module.exports = router;
