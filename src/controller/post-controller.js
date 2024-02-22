@@ -24,24 +24,26 @@ const {
   findAppealPostByPostId,
   deleteAppealPostByPostId,
 } = require("../service/appeal-service");
+const prisma = require("../model/prisma");
 
 exports.createPost = async (req, res, next) => {
   try {
     const postData = { ...req.body, userId: req.user.id };
     const newPost = await createPostByUser(postData);
-    const postImage = [];
+    let postImage = [];
+    let photoLink = [];
 
     if (req.files.length > 0) {
       const { error } = imageSchema.validate(req.files);
       if (error) {
         throw error;
       }
-      let data = { postId: newPost.id };
-      for (image of req.files) {
-        data.image = await upload(image.path);
-        const linkImage = await createImageForPost(data);
-        postImage.push(linkImage);
-      }
+      const pathImgtoCloud = req.files.map((file) => upload(file.path));
+      photoLink = await Promise.all(pathImgtoCloud);
+      const updateAll = photoLink.map((link) =>
+        createImageForPost({ postId: newPost.id, image: link })
+      );
+      postImage = await Promise.all(updateAll);
     }
     res.status(201).json({ post: { ...newPost, postImage } });
   } catch (err) {
@@ -64,13 +66,20 @@ exports.deletePost = catchError(async (req, res, next) => {
   if (!existPost) createError(400, "post not found");
   if (existPost.userId !== req.user.id && req.user.role !== "admin")
     createError(403, "Forbidden");
-  const existImagePost = await findImagePostByPostId(req.postId);
-  if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
-  const exixtComment = await findCommentByPostId(req.postId);
-  if (exixtComment.length > 0) await deleteCommentByPostId(req.postId);
-  const existAppeal = await findAppealPostByPostId(req.postId);
-  if (existAppeal.length > 0) await deleteAppealPostByPostId(req.postId);
-  await deletePostByPostId(req.postId);
+  const transaction = await prisma.$transaction([
+    deleteImagePostByPostId(req.postId),
+    deleteCommentByPostId(req.postId),
+    deleteAppealPostByPostId(req.postId),
+    deletePostByPostId(req.postId),
+  ]);
+  await transaction;
+  // const existImagePost = await findImagePostByPostId(req.postId);
+  // if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
+  // const exixtComment = await findCommentByPostId(req.postId);
+  // if (exixtComment.length > 0) await deleteCommentByPostId(req.postId);
+  // const existAppeal = await findAppealPostByPostId(req.postId);
+  // if (existAppeal.length > 0) await deleteAppealPostByPostId(req.postId);
+  // await deletePostByPostId(req.postId);
   res.status(204).json({});
 });
 
