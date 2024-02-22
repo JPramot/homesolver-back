@@ -5,8 +5,6 @@ const {
   getAllpost,
   deletePost,
   getPostWithComment,
-  // appealPost,
-  // getAppealPost,
   editPost,
 } = require("../controller/post-controller");
 const upload = require("../middlewares/upload");
@@ -14,9 +12,6 @@ const authenticate = require("../middlewares/authenticate");
 const {
   validatePostId,
 } = require("../middlewares/validations/postid-validate");
-const {
-  ValidatepostImageId,
-} = require("../middlewares/validations/postImageId-validate");
 
 const router = Router();
 

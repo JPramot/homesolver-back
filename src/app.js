@@ -33,17 +33,6 @@ app.use("/appeal", authenticate, appealRoute);
 
 app.use("/banned", authenticate, banRoute);
 
-// app.post(
-//   "/upload",
-//   require("./middlewares/upload").array("contentImage"),
-//   (req, res, next) => {
-//     console.log(file);
-//     console.log("(*******************)");
-//     console.log(files);
-//     res.status(200).json({ message: "suc" });
-//   }
-// );
-
 app.use(notFound);
 
 app.use(error);

@@ -8,8 +8,6 @@ const authenticate = catchError(async (req, res, next) => {
   if (!authorization || !authorization.startsWith("Bearer")) {
     createError(401, "invalid authentication");
   }
-  console.log("_________________", req.body);
-  console.log(req.params);
   const token = authorization.split(" ")[1];
   const payload = verify(token);
   if (!payload.id) createError(401, "invalided authentication");
