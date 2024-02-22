@@ -27,10 +27,6 @@ const {
 
 exports.createPost = async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.body, "test req body");
-    console.log(req.files);
-    // delete req.body.image;
     const postData = { ...req.body, userId: req.user.id };
     const newPost = await createPostByUser(postData);
     const postImage = [];
@@ -47,7 +43,6 @@ exports.createPost = async (req, res, next) => {
         postImage.push(linkImage);
       }
     }
-    console.log(newPost);
     res.status(201).json({ post: { ...newPost, postImage } });
   } catch (err) {
     console.log(err);
@@ -81,24 +76,18 @@ exports.deletePost = catchError(async (req, res, next) => {
 
 exports.getPostWithComment = catchError(async (req, res, next) => {
   const existPost = await getPostAndCommentByPostId(req.postId);
-  console.log(existPost);
   if (!existPost) createError(400, "post not found");
   res.status(200).json({ post: existPost });
 });
 
 exports.editPost = async (req, res, next) => {
   try {
-    console.log("controller");
-    console.log(req.params);
-    console.log(req.body);
-    console.log(req.files);
     const existPost = await findPostByPostId(req.postId);
     if (!existPost) createError(400, "post not found");
     if (existPost.userId !== req.user.id)
       createError(400, "You can't edit this post");
     if (req.body.deleteImage) {
       let imageId = req.body.deleteImage.split(",").map((el) => Number(el));
-      console.log(imageId, "testtttttttttttttttttttt");
       for (id of imageId) {
         const existPostImage = await findPostImagebyId(id);
         if (!existPostImage) createError(400, "Post image not found");
@@ -120,7 +109,7 @@ exports.editPost = async (req, res, next) => {
         postImage.push(linkImage);
       }
     }
-    res.status(200).json({ test: "test" });
+    res.status(200).json({ post: { post, postImage } });
   } catch (err) {
     console.log(err);
     createError(400, err);

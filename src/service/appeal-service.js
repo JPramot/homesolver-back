@@ -8,8 +8,15 @@ exports.createAppealPost = (data) => prisma.appealedPost.create({ data });
 exports.findAllAppealPost = () =>
   prisma.appealedPost.findMany({
     include: {
-      post: { select: { title: true, content: true, userId: true } },
-      user: { select: { userProfile: true } },
+      post: {
+        select: {
+          title: true,
+          content: true,
+          userId: true,
+          user: { select: { username: true } },
+        },
+      },
+      user: { select: { userProfile: true, username: true } },
     },
   });
 

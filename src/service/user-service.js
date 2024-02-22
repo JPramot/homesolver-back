@@ -25,5 +25,9 @@ exports.updateUserProfileById = (data, id) =>
 exports.findUserProfileAndAllPost = (id) =>
   prisma.userProfile.findFirst({
     where: { userId: id },
-    include: { user: { select: { posts: { include: { comments: true } } } } },
+    include: {
+      user: {
+        select: { posts: { include: { comments: true } }, username: true },
+      },
+    },
   });

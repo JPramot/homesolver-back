@@ -15,27 +15,20 @@ const catchError = require("../utilitys/catchError");
 
 exports.updateUserProfile = async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.file);
     let data = userProfileData(req.body);
     data = { ...data, userId: req.user.id };
-    console.log(data);
     if (req.body.birthDate) {
       const date = new Date(req.body.birthDate);
       delete data.birthDate;
       data = { ...data, birthDate: date };
     }
-    console.log(req.file);
     if (req.file) {
-      console.log("upload");
       const profileImage = await upload(req.file.path);
       if (!profileImage) createError(500, "server for cloud picture error");
       else data = { ...data, profileImage };
     }
-    console.log("before doing");
 
     const existUserProfile = await findUserProfileById(req.user.id);
-    console.log(existUserProfile);
     if (!existUserProfile) {
       const userProfile = await createUserProfile(data);
       res.status(200).json({ userProfile: userProfile });
@@ -53,7 +46,6 @@ exports.updateUserProfile = async (req, res, next) => {
   } finally {
     if (req.file) fs.unlink(req.file?.path);
   }
-  //   res.status(400).json({ message: "user error" });
 };
 
 exports.getUserProfileAndAllPost = catchError(async (req, res, next) => {
