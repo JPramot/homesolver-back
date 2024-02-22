@@ -12,10 +12,21 @@ const authenticate = require("../middlewares/authenticate");
 const {
   validatePostId,
 } = require("../middlewares/validations/postid-validate");
+const {
+  userAuthenticate,
+  checkPermission,
+} = require("../middlewares/role-authenticate");
 
 const router = Router();
 
-router.post("/", authenticate, upload.array("image"), validatePost, createPost);
+router.post(
+  "/",
+  authenticate,
+  userAuthenticate,
+  upload.array("image"),
+  validatePost,
+  createPost
+);
 
 router.get("/", getAllpost);
 
@@ -26,6 +37,7 @@ router.get("/:postId/comment", validatePostId, getPostWithComment);
 router.patch(
   "/:postId/",
   authenticate,
+  checkPermission("user"),
   upload.array("image"),
   validatePostId,
   editPost

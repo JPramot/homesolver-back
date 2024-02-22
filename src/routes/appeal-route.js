@@ -10,13 +10,19 @@ const {
   getAppealPost,
   deleteAppealPost,
 } = require("../controller/appeal-controller");
+const { checkPermission } = require("../middlewares/role-authenticate");
 
 const router = Router();
 
-router.post("/:postId", validatePostId, appealPost);
+router.post("/:postId", checkPermission("user"), validatePostId, appealPost);
 
-router.get("/", getAppealPost);
+router.get("/", checkPermission("admin"), getAppealPost);
 
-router.delete("/:appealPostId", validateAppealPostId, deleteAppealPost);
+router.delete(
+  "/:appealPostId",
+  checkPermission("admin"),
+  validateAppealPostId,
+  deleteAppealPost
+);
 
 module.exports = router;

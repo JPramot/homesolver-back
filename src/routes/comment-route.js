@@ -9,11 +9,17 @@ const {
 const {
   validateCommentId,
 } = require("../middlewares/validations/commentId-validate");
+const { checkPermission } = require("../middlewares/role-authenticate");
 
 const router = Router();
 
-router.post("/:postId", validatePostId, postComment);
+router.post("/:postId", checkPermission("user"), validatePostId, postComment);
 
-router.delete("/:commentId/:postId", validateCommentId, deleteComment);
+router.delete(
+  "/:commentId/:postId",
+  checkPermission("user"),
+  validateCommentId,
+  deleteComment
+);
 
 module.exports = router;

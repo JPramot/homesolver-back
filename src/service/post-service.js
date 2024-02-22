@@ -70,3 +70,15 @@ exports.deletePostImagebyId = (id) =>
 
 exports.editPostById = (data, id) =>
   prisma.post.update({ data, where: { id } });
+
+// exports.transaction = async(data,id) =>{
+//   try{
+//     await prisma.$transaction([
+//       await
+//     ])
+//   }catch(err){
+
+//   }finally{
+
+//   }
+// }

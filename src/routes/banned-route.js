@@ -7,13 +7,19 @@ const {
   unBanUser,
   getAllBannedUser,
 } = require("../controller/ban-controller");
+const { checkPermission } = require("../middlewares/role-authenticate");
 
 const router = Router();
 
-router.patch("/:userId", validateUserId, banUser);
+router.patch("/:userId", checkPermission("admin"), validateUserId, banUser);
 
-router.patch("/:userId/unbanned", validateUserId, unBanUser);
+router.patch(
+  "/:userId/unbanned",
+  checkPermission("admin"),
+  validateUserId,
+  unBanUser
+);
 
-router.get("/", getAllBannedUser);
+router.get("/", checkPermission("admin"), getAllBannedUser);
 
 module.exports = router;

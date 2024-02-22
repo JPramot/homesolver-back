@@ -63,7 +63,7 @@ exports.deletePost = catchError(async (req, res, next) => {
   const existPost = await findPostByPostId(req.postId);
   if (!existPost) createError(400, "post not found");
   if (existPost.userId !== req.user.id && req.user.role !== "admin")
-    createError(400, "not authorized");
+    createError(403, "Forbidden");
   const existImagePost = await findImagePostByPostId(req.postId);
   if (existImagePost.length > 0) await deleteImagePostByPostId(req.postId);
   const exixtComment = await findCommentByPostId(req.postId);

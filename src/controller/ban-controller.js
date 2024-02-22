@@ -8,7 +8,6 @@ const catchError = require("../utilitys/catchError");
 const createError = require("../utilitys/createError");
 
 exports.banUser = catchError(async (req, res, next) => {
-  if (req.user.role !== "admin") createError(401, "You're not admin");
   const existUser = await findUserById(req.userId);
   if (!existUser) createError(400, "User not found");
   if (existUser.isBan == true) createError(400, "User already banned");
@@ -17,7 +16,6 @@ exports.banUser = catchError(async (req, res, next) => {
 });
 
 exports.unBanUser = catchError(async (req, res, next) => {
-  if (req.user.role !== "admin") createError(401, "You're not admin");
   const existUser = await findUserById(req.userId);
   if (!existUser) createError(400, "User not found");
   if (existUser.isBan == false) createError(400, "User already unbanned");
@@ -26,7 +24,6 @@ exports.unBanUser = catchError(async (req, res, next) => {
 });
 
 exports.getAllBannedUser = catchError(async (req, res, next) => {
-  if (req.user.role !== "admin") createError(401, "You're not admin");
   const existBannedUser = await findAllBannedUser();
   res.status(200).json({ bannedUser: existBannedUser });
 });
